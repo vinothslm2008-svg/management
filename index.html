@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>File / Folder Directory Management System</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <div class="header-badge">MINI PROJECT</div>
+    <h1 class="header-title">File / Folder Directory Management System</h1>
+    <p class="header-subtitle">
+      Managing files and folders in a hierarchical structure using a Tree Data Structure
+    </p>
+  </header>
+
+  <!-- ===== BREADCRUMB ===== -->
+  <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+    <ol id="breadcrumb" class="breadcrumb-list"></ol>
+  </nav>
+
+  <!-- ===== MAIN LAYOUT ===== -->
+  <main class="main-grid">
+
+    <!-- LEFT COLUMN: Current folder contents + actions -->
+    <section class="card" id="explorer-card">
+      <div class="card-header">
+        <span class="card-icon">&#128194;</span>
+        <h2 class="card-title" id="folder-title">Root</h2>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="action-bar">
+        <button class="btn btn-primary" id="btn-add-folder">&#128193; New Folder</button>
+        <button class="btn btn-secondary" id="btn-add-file">&#128196; New File</button>
+      </div>
+
+      <!-- Inline create form (hidden by default) -->
+      <div class="create-form" id="create-form" hidden>
+        <span id="create-form-label" class="form-label">Name:</span>
+        <input type="text" id="create-input" class="form-input" maxlength="200"
+               autocomplete="off" placeholder="Enter name..." />
+        <div class="form-actions">
+          <button class="btn btn-primary btn-sm" id="btn-confirm-create">Create</button>
+          <button class="btn btn-ghost btn-sm" id="btn-cancel-create">Cancel</button>
+        </div>
+        <p class="form-error" id="create-error" hidden></p>
+      </div>
+
+      <!-- Directory contents list -->
+      <ul class="dir-list" id="dir-list" role="list"></ul>
+    </section>
+
+    <!-- RIGHT COLUMN: Search + Tree view -->
+    <div class="right-col">
+
+      <!-- SEARCH CARD -->
+      <section class="card" id="search-card">
+        <div class="card-header">
+          <span class="card-icon">&#128269;</span>
+          <h2 class="card-title">Search</h2>
+        </div>
+        <div class="search-bar">
+          <input type="search" id="search-input" class="form-input"
+                 placeholder="Search files and folders..." aria-label="Search files and folders" />
+          <button class="btn btn-primary btn-sm" id="btn-search">Search</button>
+        </div>
+        <ul class="search-results" id="search-results" role="list"></ul>
+      </section>
+
+      <!-- TREE VIEW CARD -->
+      <section class="card" id="tree-card">
+        <div class="card-header">
+          <span class="card-icon">&#127795;</span>
+          <h2 class="card-title">Directory Tree</h2>
+        </div>
+        <!-- Tree is rendered using recursive traversal with box-drawing connectors -->
+        <pre class="tree-view" id="tree-view" aria-label="Directory tree"></pre>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ===== CONFIRMATION MODAL ===== -->
+  <div class="modal-overlay" id="modal-overlay" hidden
+       role="dialog" aria-modal="true" aria-labelledby="modal-msg">
+    <div class="modal-box">
+      <p class="modal-msg" id="modal-msg"></p>
+      <div class="modal-actions">
+        <button class="btn btn-danger" id="modal-confirm">Delete</button>
+        <button class="btn btn-ghost" id="modal-cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TOAST NOTIFICATION ===== -->
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <p>
+      <strong>Team Leader:</strong> Vinoth &nbsp;&middot;&nbsp;
+      <strong>Members:</strong> Elango, Naresh, Velumani
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
