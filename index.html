@@ -8,41 +8,39 @@
 </head>
 <body>
 
-  <!-- ===== HEADER ===== -->
+  <!-- HEADER -->
   <header class="site-header">
     <div class="header-badge">MINI PROJECT</div>
     <h1 class="header-title">File / Folder Directory Management System</h1>
-    <p class="header-subtitle">
-      Managing files and folders in a hierarchical structure using a Tree Data Structure
-    </p>
+    <p class="header-subtitle">Managing files and folders in a hierarchical structure using a Tree Data Structure</p>
   </header>
 
-  <!-- ===== BREADCRUMB ===== -->
-  <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+  <!-- BREADCRUMB -->
+  <nav class="breadcrumb-nav">
     <ol id="breadcrumb" class="breadcrumb-list"></ol>
   </nav>
 
-  <!-- ===== MAIN LAYOUT ===== -->
+  <!-- MAIN 3-COLUMN GRID -->
   <main class="main-grid">
 
-    <!-- LEFT COLUMN: Current folder contents + actions -->
+    <!-- COL 1: Explorer -->
     <section class="card" id="explorer-card">
       <div class="card-header">
         <span class="card-icon">&#128194;</span>
         <h2 class="card-title" id="folder-title">Root</h2>
       </div>
 
-      <!-- Action buttons -->
       <div class="action-bar">
         <button class="btn btn-primary" id="btn-add-folder">&#128193; New Folder</button>
         <button class="btn btn-secondary" id="btn-add-file">&#128196; New File</button>
+        <button class="btn btn-ghost" id="btn-upload-file" title="Upload files from your computer">&#128229; Upload</button>
+        <input type="file" id="file-upload-input" multiple style="display:none;" />
       </div>
 
-      <!-- Inline create form (hidden by default) -->
+      <!-- Inline create form -->
       <div class="create-form" id="create-form" hidden>
         <span id="create-form-label" class="form-label">Name:</span>
-        <input type="text" id="create-input" class="form-input" maxlength="200"
-               autocomplete="off" placeholder="Enter name..." />
+        <input type="text" id="create-input" class="form-input" maxlength="200" autocomplete="off" placeholder="e.g. index.html, main.py, data.json" />
         <div class="form-actions">
           <button class="btn btn-primary btn-sm" id="btn-confirm-create">Create</button>
           <button class="btn btn-ghost btn-sm" id="btn-cancel-create">Cancel</button>
@@ -52,41 +50,88 @@
 
       <!-- Directory contents list -->
       <ul class="dir-list" id="dir-list" role="list"></ul>
+
+      <div class="explorer-footer">
+        <button class="btn-text-sm" id="btn-reset-demo" title="Restore default sample folders and files">&#8634; Reset Sample Files</button>
+      </div>
     </section>
 
-    <!-- RIGHT COLUMN: Search + Tree view -->
-    <div class="right-col">
+    <!-- COL 2: Code Editor -->
+    <section class="card editor-card" id="editor-card">
+      <div class="editor-toolbar">
+        <div class="editor-tab">
+          <span id="editor-file-icon">&#128196;</span>
+          <span id="editor-filename">No file open</span>
+          <span class="lang-badge" id="editor-lang-badge">TXT</span>
+        </div>
+        <div class="editor-btns">
+          <button class="btn btn-primary btn-sm" id="btn-edit-file" hidden>&#9998; Edit</button>
+          <button class="btn btn-success btn-sm" id="btn-save-file" hidden>&#10003; Save</button>
+          <button class="btn btn-ghost btn-sm" id="btn-cancel-edit" hidden>&#10005; Cancel</button>
+          <button class="btn btn-secondary btn-sm" id="btn-run-html" hidden title="Run HTML in a new tab">&#9654; Run HTML</button>
+          <button class="btn btn-ghost btn-sm" id="btn-download-file" hidden title="Download this file">&#11015; Download</button>
+          <button class="btn btn-ghost btn-sm" id="btn-close-editor">&#10005; Close</button>
+        </div>
+      </div>
 
-      <!-- SEARCH CARD -->
+      <!-- Read mode: syntax highlighted or image preview -->
+      <div class="editor-body" id="editor-body-read">
+        <div class="editor-empty" id="editor-empty">
+          <div class="editor-empty-icon">&#128196;</div>
+          <p class="editor-empty-title">Click any file to view and edit</p>
+          <p class="hint">Supports HTML, Python (.py), JavaScript, CSS, Java, C/C++, JSON, Markdown &amp; more</p>
+        </div>
+        <div class="code-wrap" id="code-wrap" hidden>
+          <div class="line-nums" id="line-nums-read"></div>
+          <pre class="code-view" id="code-view"></pre>
+        </div>
+        <div class="image-preview-wrap" id="image-preview-wrap" hidden>
+          <img id="image-preview" src="" alt="preview" />
+        </div>
+      </div>
+
+      <!-- Edit mode: textarea with live line numbers -->
+      <div class="editor-body" id="editor-body-edit" hidden>
+        <div class="line-nums" id="line-nums-edit"></div>
+        <textarea class="code-editor" id="code-editor" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Write or paste your code here..."></textarea>
+      </div>
+
+      <!-- Status bar -->
+      <div class="editor-statusbar" id="editor-statusbar">
+        <span id="status-lang">—</span>
+        <span id="status-lines">0 lines</span>
+        <span id="status-chars">0 chars</span>
+        <span id="status-mode">IDLE</span>
+      </div>
+    </section>
+
+    <!-- COL 3: Search + Tree -->
+    <div class="right-col">
       <section class="card" id="search-card">
         <div class="card-header">
-          <span class="card-icon">&#128269;</span>
-          <h2 class="card-title">Search</h2>
+          <span>&#128269;</span>
+          <h2 class="card-title">Recursive Search</h2>
         </div>
         <div class="search-bar">
-          <input type="search" id="search-input" class="form-input"
-                 placeholder="Search files and folders..." aria-label="Search files and folders" />
-          <button class="btn btn-primary btn-sm" id="btn-search">Search</button>
+          <input type="search" id="search-input" class="form-input" placeholder="Search files &amp; folders..." aria-label="Search" />
+          <button class="btn btn-primary btn-sm" id="btn-search">Go</button>
         </div>
         <ul class="search-results" id="search-results" role="list"></ul>
       </section>
 
-      <!-- TREE VIEW CARD -->
       <section class="card" id="tree-card">
         <div class="card-header">
-          <span class="card-icon">&#127795;</span>
+          <span>&#127795;</span>
           <h2 class="card-title">Directory Tree</h2>
         </div>
-        <!-- Tree is rendered using recursive traversal with box-drawing connectors -->
-        <pre class="tree-view" id="tree-view" aria-label="Directory tree"></pre>
+        <pre class="tree-view" id="tree-view"></pre>
       </section>
-
     </div>
+
   </main>
 
-  <!-- ===== CONFIRMATION MODAL ===== -->
-  <div class="modal-overlay" id="modal-overlay" hidden
-       role="dialog" aria-modal="true" aria-labelledby="modal-msg">
+  <!-- Delete Modal -->
+  <div class="modal-overlay" id="modal-overlay" hidden role="dialog" aria-modal="true">
     <div class="modal-box">
       <p class="modal-msg" id="modal-msg"></p>
       <div class="modal-actions">
@@ -96,15 +141,12 @@
     </div>
   </div>
 
-  <!-- ===== TOAST NOTIFICATION ===== -->
+  <!-- Toast -->
   <div class="toast" id="toast" role="alert" aria-live="polite"></div>
 
-  <!-- ===== FOOTER ===== -->
+  <!-- Footer -->
   <footer class="site-footer">
-    <p>
-      <strong>Team Leader:</strong> Vinoth &nbsp;&middot;&nbsp;
-      <strong>Members:</strong> Elango, Naresh, Velumani
-    </p>
+    <p><strong>Team Leader:</strong> Vinoth &nbsp;&middot;&nbsp; <strong>Members:</strong> Elango, Naresh, Velumani</p>
   </footer>
 
   <script src="script.js"></script>
