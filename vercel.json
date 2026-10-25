@@ -2,14 +2,22 @@
   "version": 2,
   "builds": [
     {
-      "src": "tachometer.html",
+      "src": "index.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "style.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "script.js",
       "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/tachometer.html"
+      "dest": "/index.html"
     }
   ]
 }
